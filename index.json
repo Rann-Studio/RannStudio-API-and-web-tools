@@ -1,0 +1,24 @@
+{
+	"status":"success",
+	"message":"Welcome to RannStudio API",
+	"author":"Rann",
+	"daftar_api":{
+		"bmkg":{
+			"sumber": "BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)",
+			"endpoint":{
+				"gempa": {
+					"terbaru" : "Menampilkan data gempa terbaru",
+					"15-terbaru" : "Menampilkan data 15 gempa terbaru",
+					 "15-terbaru-5-magnitude" : "Menampilkan data 15 gempa terbaru dengan magnitude minimal 5.0",
+					"shakemap/<nama>": "Menampilkan gambar shakemap"
+				},
+				"cuaca":{
+					"<provinsi>": "Menampilkan data cuaca berdasarkan provinsi"
+				}
+			}
+		},
+		"tulis":{
+			"info": "Sedang dalam pengembangan"
+		}
+	}
+}
