@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>BOT Tulis</title>
+    </head>
+    <body>
+        <div class="site-section" id="contact-section">
+            <div class="container">
+                <form class="contact-form" method="post" action="generate/">
+                    <div class="section-title text-center mb-5">
+                        <h2 class="title text-primary">BOT Tulis</h2>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-2">
+                            <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama" />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" class="form-control" name="kelas" id="kelas" placeholder="Kelas" />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" class="form-control" name="tanggal" id="tanggal" placeholder="Tanggal" />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <select class="form-control" name="kertas" id="kertas">
+                                <option value="1">Kertas 1</option>
+                                <option value="2">Kertas 2</option>
+                                <option value="3">Kertas 3</option>
+                                <option value="4">Kertas 4</option>
+                                <option value="5">Kertas 5</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <select class="form-control" name="font" id="font">
+                                <option value="1">Font 1</option>
+                                <option value="2">Font 2</option>
+                                <option value="3">Font 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <textarea class="form-control" name="teks" id="teks" cols="30" rows="10" placeholder="Masukkan Teks"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <input id="buat-gambar" type="submit" class="btn btn-primary btn-md" value="Buat Gambar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(function () {
+            $("#buat-gambar").click(function (e) {
+                e.preventDefault();
+            
+                let nama = $("#nama").val() || false;
+                let kelas = $("#kelas").val()  || false;
+                let tanggal = $("#tanggal").val()  || false;
+                let kertas = $("#kertas").val();
+                let font = $("#font").val();
+                let teks = $("#teks").val();
+            
+                let button = $("#buat-gambar");
+            
+                if (!(teks)) {
+                button.removeClass("btn-primary");
+                button.addClass("btn-warning");
+                button.val("Teks wajib di isi");
+            
+                setTimeout(function () {
+                    button.removeClass("btn-warning");
+                    button.removeAttr("disabled");
+                    button.val("Buat Gambar");
+                    button.addClass("btn-primary");
+                }, 3000);
+                return;
+                }
+                
+                window.location = "generate?nama=" + nama + "&kelas=" + kelas + "&tanggal=" + tanggal + "&kertas=" + kertas + "&font=" + font + "&teks=" + teks;
+            });
+        });
+    </script>
+</html>

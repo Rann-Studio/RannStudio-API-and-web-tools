@@ -1,10 +1,12 @@
 import flask
 import json
-import api.bmkg as bmkg
+from api.bmkg import BMKG
+from api.tulis import Tulis
 
 app = flask.Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 app.config["JSON_SORT_KEYS"] = False
+
 
 
 ###############################################################################
@@ -21,22 +23,22 @@ def index():
 ###############################################################################
 @app.route(rule='/bmkg/gempa/terbaru/', methods=['GET'])
 def gempa_terbaru():
-    data = bmkg.BMKG().gempaTerbaru()
+    data = BMKG().gempaTerbaru()
     return flask.jsonify(data), 200
 
 @app.route(rule='/bmkg/gempa/15-terbaru/', methods=['GET'])
 def gempa_terbaru_15():
-    data = bmkg.BMKG().gempaTerbaru15()
+    data = BMKG().gempaTerbaru15()
     return flask.jsonify(data), 200
 
 @app.route(rule='/bmkg/gempa/15-terbaru-5-magnitude/', methods=['GET'])
 def gempa_terbaru_15_m5():
-    data = bmkg.BMKG().gempaTerbaru15_M5()
+    data = BMKG().gempaTerbaru15_M5()
     return flask.jsonify(data), 200
 
 @app.route(rule='/bmkg/gempa/shakemap/<name>/', methods=['GET'])
 def shakemap(name):
-    data = bmkg.BMKG().getShakemap(name)
+    data = BMKG().getShakemap(name)
     return flask.Response(data, mimetype='image/png')
 
 
@@ -45,7 +47,7 @@ def shakemap(name):
 ###############################################################################
 @app.route(rule='/bmkg/cuaca/<provinsi>/', methods=['GET'])
 def cuaca(provinsi):
-    status, data = bmkg.BMKG().cuaca(provinsi)
+    status, data = BMKG().cuaca(provinsi)
     if status == 200:
         return flask.Response(data, mimetype='text/xml')
     else:
@@ -60,12 +62,24 @@ def cuaca(provinsi):
 ###############################################################################
 #                                API BOT TULIS                                #
 ###############################################################################
-@app.route(rule='/tulis/', methods=['GET'])
+@app.route(rule='/tulis/app', methods=['GET'])
 def tulis():
-    return flask.jsonify({
-        "status": "error",
-        "message": "Sedang dalam pengembangan"
-    }), 410
+    return flask.send_from_directory("", 'tulis.html')
+    
+@app.route(rule='/tulis/generate/', methods=['GET'])
+def generateTulis():
+    nama = flask.request.args.get('nama')
+    kelas = flask.request.args.get('kelas')
+    tanggal = flask.request.args.get('tanggal')
+    teks = flask.request.args.get('teks')
+    kertas = flask.request.args.get('kertas')
+    font = flask.request.args.get('font')
+    result = Tulis(nama=nama, kelas=kelas, tanggal=tanggal, teks=teks, kertas=kertas, font=font).buatGambar()
+    return flask.jsonify(result), 200
+
+@app.route(rule='/tulis/download/<filename>', methods=['GET'])
+def downloadTulis(filename):
+    return flask.send_file("api/src/output/" + filename, mimetype='image/jpg')
 
 
 ###############################################################################
